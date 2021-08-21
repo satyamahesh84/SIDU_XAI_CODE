@@ -2,15 +2,19 @@ This repository contains source code necessary to reproduce some of the main res
 
 If you use this software in an academic article, please cite this paper:
 
-@INPROCEEDINGS{9190952,
-  author={Muddamsetty, Satya M. and Mohammad, N. S. Jahromi and Moeslund, Thomas B.},
-  booktitle={2020 IEEE International Conference on Image Processing (ICIP)}, 
-  title={SIDU: Similarity Difference And Uniqueness Method for Explainable AI}, 
-  year={2020},
-  volume={},
-  number={},
-  pages={3269-3273},
-  doi={10.1109/ICIP40778.2020.9190952}}
+
+**If you use this software in an academic article, please consider citing:**
+
+		@inproceedings{9190952,
+		  author={Muddamsetty, Satya M. and Mohammad, N. S. Jahromi and Moeslund, Thomas B.},
+		  booktitle={2020 IEEE International Conference on Image Processing (ICIP)}, 
+		  title={SIDU: Similarity Difference And Uniqueness Method for Explainable AI}, 
+		  year={2020},
+		  volume={},
+		  number={},
+		  pages={3269-3273},
+		  doi={10.1109/ICIP40778.2020.9190952}
+		}
 
 For more information regarding the paper
 Abstract:
