@@ -218,7 +218,7 @@ if __name__ == '__main__':
 
 
   ## reading the image from  the folder
-  read_path = join('test_images', '000122.jpg')
+  read_path = join('test_images', 'water-bird.JPEG')
   
   ### load the image
   
