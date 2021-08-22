@@ -11,7 +11,7 @@ This code will run the evalautions on single image and as well as for all the im
 
 @author: satya (email: smmu@create.aau.dk)
 """
-
+from tensorflow.keras.applications.vgg16 import VGG16
 from tensorflow.keras.applications.vgg19 import VGG19
 from tensorflow.keras.preprocessing import image
 from tensorflow.keras.applications.vgg19 import preprocess_input
@@ -48,7 +48,7 @@ if __name__ == '__main__':
  #imagelist = glob.glob('/home/administrator/DATA/ILSVRC2012/ILSVRC2012_img_val_1to1000/*.JPEG') 
  
  ## path of your base directory to run on whole dataset.
- 
+ ## to run on your own dataset please place the path of your own directory
  base_dir = '/home/administrator/DATA/ILSVRC2012'
  
  ## CHOOSING THE base MODEL TO GET EXPLANTIONS
@@ -67,17 +67,11 @@ if __name__ == '__main__':
     shuffle=False)
  
  ### to load the based model here we choose Resnet-50 and VGG-16 but we can any models
- # if model_eval == 'Resnet50':
- #    base_model = ResNet50()
- #    features_model = Model(inputs=base_model.input, outputs=base_model.get_layer('activation_48').output)
-    
- # elif model_eval == 'Vgg16':
- #    base_model = VGG19(weights='imagenet')
- #    features_model = Model(inputs=base_model.input, outputs=base_model.get_layer('block4_pool').output)
  
  if model_eval == 'Resnet50':
     base_model = ResNet50()
-    #features_model = Model(inputs=base_model.input, outputs=base_model.get_layer('activation_48').output)
+    ####  to see the last layer of CNN use base_model.summary() 
+
     features_model = Model(inputs=base_model.input, outputs=base_model.get_layer('conv5_block3_out').output)
 
  elif model_eval == 'Vgg19':
@@ -86,18 +80,20 @@ if __name__ == '__main__':
  elif model_eval == 'Vgg16':
     base_model = VGG16(weights='imagenet')
     features_model = Model(inputs=base_model.input, outputs=base_model.get_layer('block5_conv3').output)
- elif model_eval == 'Mobilenet':
-    base_model = MobileNetV2()
-    features_model = Model(inputs=base_model.input, outputs=base_model.get_layer('out_relu').output)
+ 
 
 
      
  ## to evalute on single image for different state-of-art methods
+ ## for single image
  evaluate = 'single_image'
+ ### for full dataset use the below
+ #evaluate = 'full_dataset'
+ ############################################################
  if evaluate == 'single_image':
      
      run = 'my_method'
-     ## read the image path
+     ## read the image path and provide the image name to see the explanation
      read_path = join('test_images', 'water-bird.JPEG')
      
      ## load the image 
@@ -112,15 +108,15 @@ if __name__ == '__main__':
            last_conv_output = np.squeeze(conv_features)
            ## genereating the feature image masks
            masks, grid, cell_size, up_size = XAI.generate_masks_conv_output((224,224), last_conv_output, 8)
-           ## to plot and see the each inidiviadual mask
+           #### to plot and see the each inidiviadual mask
            new_masks = np.rollaxis(masks, 2, 0)
            size = new_masks.shape
            data = new_masks.reshape(size[0], size[1], size[2], 1)
-           conv_out = last_conv_output[:,:,100]
+           conv_out = last_conv_output[:,:,500]
            conv_100 = conv_out > 0.5
            conv_ot100 = conv_100.astype('float32')
-           mask_ind = masks[:, :, 100]
-           grid_ind = grid[100,:,:]
+           mask_ind = masks[:, :, 500]
+           grid_ind = grid[500,:,:]
            new_mask= np.reshape(mask_ind,(224,224))
            masked = x * data
            masked_2 = img_tensor1 * data
@@ -131,7 +127,7 @@ if __name__ == '__main__':
            plt.imshow(grid_ind)
            plt.axis('off')
            plt.subplot(1, 4, 4)
-           plt.imshow(masked_2[100,:,:])
+           plt.imshow(masked_2[500,:,:])
            plt.axis('off')
            plt.subplot(1, 4, 2)
            plt.imshow(conv_ot100)
