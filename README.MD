@@ -53,4 +53,7 @@ A new brand of technical artificial intelligence (Explainable AI) research has f
 ![](https://github.com/satyamahesh84/SIDU_XAI_CODE/blob/main/SIDU_pics/SIDU_Generating_Feature_Image_Masks.jpg)
 
 ## Visual Explanations 
-![]()
+![](https://github.com/satyamahesh84/SIDU_XAI_CODE/blob/main/SIDU_pics/Visual_Explanation_of%20Natural_Image_SIDU.png)
+
+
+
