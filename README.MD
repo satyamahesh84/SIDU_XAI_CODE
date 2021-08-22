@@ -1,9 +1,11 @@
+## SIDU: Similarity Difference And Uniquness Method for Explainable AI
+
 This repository contains source code necessary to reproduce some of the main results in the paper:
 
-If you use this software in an academic article, please cite this paper:
+If you use this software in an academic article, please cite this paper: <br>
 
- <br>
-[SIDU: Similarity Difference And Uniqueness Method for Explainable AI] (https://ieeexplore.ieee.org/abstract/document/9190952)
+ 
+<br>[SIDU: Similarity Difference And Uniqueness Method for Explainable AI] (https://ieeexplore.ieee.org/abstract/document/9190952)
 
 
 This folder contains supporting for code developed in python.
