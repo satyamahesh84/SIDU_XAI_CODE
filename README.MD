@@ -12,7 +12,7 @@ This folder contains supporting for code developed in python.
 To use this code you need install supporting modules of python.
 
 
-1. tensorflow
+1. tensorflow gpu
 
 2. numpy
 
@@ -53,3 +53,4 @@ A new brand of technical artificial intelligence (Explainable AI) research has f
 ![](https://github.com/satyamahesh84/SIDU_XAI_CODE/blob/main/SIDU_pics/SIDU_Generating_Feature_Image_Masks.jpg)
 
 ## Visual Explanations 
+![]()
