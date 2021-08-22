@@ -46,3 +46,7 @@ For more information regarding the paper
 Abstract:
 A new brand of technical artificial intelligence (Explainable AI) research has focused on trying to open up the ‘black box’ and provide some explainability. This paper presents a novel visual explanation method for deep learning networks in the form of a saliency map that can effectively localize entire object regions. In contrast to the current state-of-the art methods, the proposed method shows quite promising visual explanations that can gain greater trust of human expert. Both quantitative and qualitative evaluations are carried out on both general and clinical data sets to confirm the effectiveness of the proposed method.
 
+
+## Examples
+![]()
+![]()
