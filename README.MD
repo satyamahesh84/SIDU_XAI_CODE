@@ -5,7 +5,7 @@ This repository contains source code necessary to reproduce some of the main res
 If you use this software in an academic article, please cite this paper: <br>
 
  
-<br>[SIDU: Similarity Difference And Uniqueness Method for Explainable AI] (https://ieeexplore.ieee.org/abstract/document/9190952)
+**SIDU: Similarity Difference And Uniqueness Method for Explainable AI** (https://ieeexplore.ieee.org/abstract/document/9190952) (https://arxiv.org/abs/2006.03122)
 
 
 This folder contains supporting for code developed in python.
@@ -25,6 +25,10 @@ To use this code you need install supporting modules of python.
 5. os
 
 6. skimage
+
+7. PIL
+
+8. matplotlib
 
 
 To understand the code pls refere the paper of SIDU
