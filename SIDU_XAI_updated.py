@@ -97,7 +97,7 @@ def generate_masks_conv_output(input_size, last_conv_output, s= 8):
         """converting last convlayer to binary mask"""
         conv_out = conv_out > 0.5
         conv_out = conv_out.astype('float32')
-        """ upsampling the binary mask using bi-linear interpolation """
+        """ upsampling the binary mask using bi-linear interpolation (feature activaions masks) """
         final_resize = resize(conv_out, up_size, order=1, mode='reflect',
                                 anti_aliasing=False)
         masks[:, :, i] = final_resize            
@@ -119,28 +119,28 @@ def sim_differences(pred_org, preds):
 def normalize(array):
       return (array - array.min()) / (array.max() - array.min() + 1e-13)   
   
-def feature_interaction_uniqness(masks_predictions):
+def uniqness_measure(masks_predictions):
     """ computing the uniqness between the feature maps """
     #amp_all_cdist =cdist(all_amp_layer_weights, all_amp_layer_weights)
     sum_all_cdist =(cdist(masks_predictions, masks_predictions)).sum(axis=1)
     sum_all_cdist = normalize(sum_all_cdist)
     return sum_all_cdist
 
-def explain_diff(model, inp, N, p1, masks, input_size):
-    """ explaiang only using similarity differences """
-    preds = []
-    # Make sure multiplication is being done for correct axes
-    masked = inp * masks
-    pred_org = model.predict(inp)
+# def explain_diff(model, inp, N, p1, masks, input_size):
+#     """ explaiang only using similarity differences """
+#     preds = []
+#     # Make sure multiplication is being done for correct axes
+#     masked = inp * masks
+#     pred_org = model.predict(inp)
 
-    for i in tqdm(range(0, N, batch_size), desc='Explaining'):
-        preds.append(model.predict(masked[i:min(i+batch_size, N)]))
-    preds = np.concatenate(preds)
+#     for i in tqdm(range(0, N, batch_size), desc='Explaining'):
+#         preds.append(model.predict(masked[i:min(i+batch_size, N)]))
+#     preds = np.concatenate(preds)
     
-    weights, diff = sim_differences(pred_org, preds)
-    sal = weights.T.dot(masks.reshape(N, -1)).reshape(-1, *input_size)
-    sal = sal / N / p1
-    return sal, weights, pred_org
+#     weights, diff = sim_differences(pred_org, preds)
+#     sal = weights.T.dot(masks.reshape(N, -1)).reshape(-1, *input_size)
+#     sal = sal / N / p1
+#     return sal, weights, pred_org
 
 def explain_SIDU(model, inp, N, p1, masks, input_size):
     """ SIDU explanation """
@@ -157,7 +157,7 @@ def explain_SIDU(model, inp, N, p1, masks, input_size):
     preds = np.concatenate(preds)
     
     weights, diff = sim_differences(pred_org, preds)
-    interactions = feature_interaction_uniqness(preds)
+    interactions = uniqness_measure(preds)
     new_interactions = interactions.reshape(-1, 1)
     diff_interactions = np.multiply(weights, new_interactions)
     
@@ -211,17 +211,33 @@ def fold_dir(folder):
 
 if __name__ == '__main__':
 
-  run = 'SIDU'
+
   
   ### LOADING THE PRE-TRAINED BASE MODEL
   #base_model = VGG19(weights='imagenet')
-  base_model = ResNet50()
+  # base_model = ResNet50()
   
-  #### extracting the last convlution layers of the model
+  # #### extracting the last convlution layers of the model
   
-  #model = Model(inputs=base_model.input, outputs=base_model.get_layer('block4_pool').output)     ## for vgg model
-  #model = Model(inputs=base_model.input, outputs=base_model.get_layer('activation_48').output)    ### for resnet-5 model
-  model = Model(inputs=base_model.input, outputs=base_model.get_layer('conv5_block3_out').output)
+  # #model = Model(inputs=base_model.input, outputs=base_model.get_layer('block4_pool').output)     ## for vgg model
+  # #model = Model(inputs=base_model.input, outputs=base_model.get_layer('activation_48').output)    ### for resnet-5 model
+  # model = Model(inputs=base_model.input, outputs=base_model.get_layer('conv5_block3_out').output)
+  
+  if model_eval == 'Resnet50':
+    base_model = ResNet50()
+    #features_model = Model(inputs=base_model.input, outputs=base_model.get_layer('activation_48').output)
+    features_model = Model(inputs=base_model.input, outputs=base_model.get_layer('conv5_block3_out').output)
+
+  elif model_eval == 'Vgg19':
+    base_model = VGG19(weights='imagenet')
+    features_model = Model(inputs=base_model.input, outputs=base_model.get_layer('block5_conv4').output)
+  elif model_eval == 'Vgg16':
+    base_model = VGG16(weights='imagenet')
+    features_model = Model(inputs=base_model.input, outputs=base_model.get_layer('block5_conv3').output)
+  elif model_eval == 'Mobilenet':
+    base_model = MobileNetV2()
+    features_model = Model(inputs=base_model.input, outputs=base_model.get_layer('out_relu').output)
+
 
 
   ## reading the image from  the folder
@@ -236,42 +252,42 @@ if __name__ == '__main__':
 
   last_conv_output = np.squeeze(feature_activation_maps)
   
-  if run == 'SIDU':
+  
       
-     masks, grid, cell_size, up_size = generate_masks_conv_output((224,224), last_conv_output, s= 8)
-     ## TO DISPLAY THE FEATURE ACTIVATION IMAGE MASKS
-     mask_ind = masks[:, :, 500]
-     grid_ind = grid[500,:,:]
-     new_mask= np.reshape(mask_ind,(224,224))
-     new_masks = np.rollaxis(masks, 2, 0)
-     size = new_masks.shape
-     data = new_masks.reshape(size[0], size[1], size[2], 1)
-     masked = x * data
+  masks, grid, cell_size, up_size = generate_masks_conv_output((224,224), last_conv_output, s= 8)
+  ## TO DISPLAY THE FEATURE ACTIVATION IMAGE MASKS
+  mask_ind = masks[:, :, 500]
+  grid_ind = grid[500,:,:]
+  new_mask= np.reshape(mask_ind,(224,224))
+  new_masks = np.rollaxis(masks, 2, 0)
+  size = new_masks.shape
+  data = new_masks.reshape(size[0], size[1], size[2], 1)
+  masked = x * data
 #     plt.subplot(1, 3, 2)
 #     plt.imshow(new_mask)
 #     plt.subplot(1, 3, 1)
 #     plt.imshow(grid_ind)
 #     plt.subplot(1, 3, 3)
 #     plt.imshow(masked[500,:,:])
-     N = len(new_masks)
+  N = len(new_masks)
   
     
-     sal, weights, new_interactions, diff_interactions, pred_org = explain_SIDU(base_model, x, N, 0.5, data, (224,224))
+  sal, weights, new_interactions, diff_interactions, pred_org = explain_SIDU(base_model, x, N, 0.5, data, (224,224))
   
-     ## getting the top predicted class
-     pred_vec= base_model.predict(x)
-     pred = np.argmax(pred_vec)
-     class_idx = pred
+  ## getting the top predicted class
+  pred_vec= base_model.predict(x)
+  pred = np.argmax(pred_vec)
+  class_idx = pred
      
      
 #     plt.figure()
 #     _show_explanation(img, sal[class_idx], class_idx,  read_path+'imagenet', show=True, save=True, save_folder='', alpha=0.3, figsize=(15, 5),
 #                        cmap='jet')
-     plt.title('Explanation for `{}`'.format(class_name(class_idx)))
-     plt.axis('off')
-     plt.imshow(img)
-     plt.imshow(sal[class_idx], cmap='jet', alpha=0.5)
-     plt.axis('off') 
-     # plt.colorbar()
-     plt.show()
+  plt.title('Explanation for `{}`'.format(class_name(class_idx)))
+  plt.axis('off')
+  plt.imshow(img)
+  plt.imshow(sal[class_idx], cmap='jet', alpha=0.5)
+  plt.axis('off') 
+  # plt.colorbar()
+  plt.show()
  
