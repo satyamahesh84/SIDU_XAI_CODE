@@ -67,14 +67,31 @@ if __name__ == '__main__':
     shuffle=False)
  
  ### to load the based model here we choose Resnet-50 and VGG-16 but we can any models
+ # if model_eval == 'Resnet50':
+ #    base_model = ResNet50()
+ #    features_model = Model(inputs=base_model.input, outputs=base_model.get_layer('activation_48').output)
+    
+ # elif model_eval == 'Vgg16':
+ #    base_model = VGG19(weights='imagenet')
+ #    features_model = Model(inputs=base_model.input, outputs=base_model.get_layer('block4_pool').output)
+ 
  if model_eval == 'Resnet50':
     base_model = ResNet50()
-    features_model = Model(inputs=base_model.input, outputs=base_model.get_layer('activation_48').output)
-    
- elif model_eval == 'Vgg16':
+    #features_model = Model(inputs=base_model.input, outputs=base_model.get_layer('activation_48').output)
+    features_model = Model(inputs=base_model.input, outputs=base_model.get_layer('conv5_block3_out').output)
+
+ elif model_eval == 'Vgg19':
     base_model = VGG19(weights='imagenet')
-    features_model = Model(inputs=base_model.input, outputs=base_model.get_layer('block4_pool').output)
-    
+    features_model = Model(inputs=base_model.input, outputs=base_model.get_layer('block5_conv4').output)
+ elif model_eval == 'Vgg16':
+    base_model = VGG16(weights='imagenet')
+    features_model = Model(inputs=base_model.input, outputs=base_model.get_layer('block5_conv3').output)
+ elif model_eval == 'Mobilenet':
+    base_model = MobileNetV2()
+    features_model = Model(inputs=base_model.input, outputs=base_model.get_layer('out_relu').output)
+
+
+     
  ## to evalute on single image for different state-of-art methods
  evaluate = 'single_image'
  if evaluate == 'single_image':

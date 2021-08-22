@@ -1,6 +1,14 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
+Created on Sun Aug 22 17:07:52 2021
+
+@author: administrator
+"""
+
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
 Created on Fri Feb 21 16:07:29 2020
 
 Similarity Difference and Uniqness for Explainable AI (SIDU)
