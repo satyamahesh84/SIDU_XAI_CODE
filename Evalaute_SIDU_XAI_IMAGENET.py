@@ -113,7 +113,7 @@ if __name__ == '__main__':
            size = new_masks.shape
            data = new_masks.reshape(size[0], size[1], size[2], 1)
            conv_out = last_conv_output[:,:,500]
-           conv_100 = conv_out > 0.5
+           conv_100 = conv_out > 0.1
            conv_ot100 = conv_100.astype('float32')
            mask_ind = masks[:, :, 500]
            grid_ind = grid[500,:,:]

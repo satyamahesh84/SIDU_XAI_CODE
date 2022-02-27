@@ -95,7 +95,7 @@ def generate_masks_conv_output(input_size, last_conv_output, s= 8):
         """extracting the each feature maps of last convlution layer """
         conv_out = last_conv_output[:,:,i]
         """converting last convlayer to binary mask"""
-        conv_out = conv_out > 0.5
+        conv_out = conv_out > 0.1
         conv_out = conv_out.astype('float32')
         """ upsampling the binary mask using bi-linear interpolation (feature activaions masks) """
         final_resize = resize(conv_out, up_size, order=1, mode='reflect',
