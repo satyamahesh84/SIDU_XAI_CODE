@@ -5,7 +5,7 @@ This repository contains source code necessary to reproduce some of the main res
 If you use this software in an academic article, please cite this paper: <br>
 
  
-**SIDU: Similarity Difference And Uniqueness Method for Explainable AI** (https://ieeexplore.ieee.org/abstract/document/9190952) (https://arxiv.org/abs/2006.03122)
+**SIDU: Similarity Difference And Uniqueness Method for Explainable AI** (https://doi.org/10.1016/j.patcog.2022.108604)(https://ieeexplore.ieee.org/abstract/document/9190952) (https://arxiv.org/abs/2006.03122)
 
 
 This folder contains supporting for code developed in python.
@@ -62,12 +62,12 @@ Further details can be found on the paper as follow,
 		  doi={10.1109/ICIP40778.2020.9190952}
 		}
 
-}
+
 For more information regarding the paper check out the below diagrams,
 
 
 ## Abstract:
-A new brand of technical artificial intelligence (Explainable AI) research has focused on trying to open up the ‘black box’ and provide some explainability. This paper presents a novel visual explanation method for deep learning networks in the form of a saliency map that can effectively localize entire object regions. In contrast to the current state-of-the art methods, the proposed method shows quite promising visual explanations that can gain greater trust of human expert. Both quantitative and qualitative evaluations are carried out on both general and clinical data sets to confirm the effectiveness of the proposed method.
+Explainable Artificial Intelligence (XAI) has in recent years become a well-suited framework to generate human understandable explanations of ‘black- box’ models. In this paper, a novel XAI visual explanation algorithm known as the Similarity Difference and Uniqueness (SIDU) method that can effectively localize entire object regions responsible for prediction is presented in full detail. The SIDU algorithm robustness and effectiveness is analyzed through various computational and human subject experiments. In particular, the SIDU algorithm is assessed using three different types of evaluations (Application, Human and Functionally-Grounded) to demonstrate its superior performance. The robustness of SIDU is further studied in the presence of adversarial attack on ’black-box’ models to better understand its performance. Our code is available at: https://github.com/satyamahesh84/SIDU_XAI_CODE.
 
 
 ## SIDU BLOCK DIAGRAM
